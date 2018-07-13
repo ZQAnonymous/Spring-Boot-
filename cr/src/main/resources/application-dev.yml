@@ -1,0 +1,71 @@
+## 开发版配置文件
+
+server:
+  port: 8080
+  servlet:
+    context-path: /cr
+
+spring:
+  #热部署生效
+  devtools:
+    restart:
+      enabled: true
+  datasource:
+    druid:
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      # 初始化大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'X'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+#      filters: stat
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      # 合并多个DruidDataSource的监控数据
+      use-global-data-source-stat: true
+      filters: stat,wall
+  #配置redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 1000
+    password:
+  #关闭thymeleaf缓存
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+
+#Mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.crmeeting.entity
+
+#在控制台输出sql语句
+logging:
+#  pattern:
+#    console: %d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n
+#    file: %d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n
+  file: logs/spring-boot-logging.log
+  level:
+    com:
+      crmeeting:
+        mapper: debug
+
+
+
